@@ -70,6 +70,9 @@ public class WearService extends TeleportService{
         protected void onPostExecute(DataMap result) {
             CustomObject obj = new CustomObject(TeleportClient.byteToParcel(result.getByteArray("byte")));
             Log.d(TAG, "onPostExecute object: " + obj);
+
+            //let's reset the task (otherwise it will be executed only once)
+            setOnSyncDataItemTask(new StartObjectTask());
         }
     }
 }
