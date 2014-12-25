@@ -1,9 +1,9 @@
 package com.mariux.teleport;
 
-import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.util.Log;
 
+import com.google.android.gms.wearable.DataMap;
 import com.mariux.teleport.lib.TeleportClient;
 import com.mariux.teleport.lib.TeleportService;
 
@@ -11,7 +11,7 @@ import com.mariux.teleport.lib.TeleportService;
  * Created by Mario on 10/07/2014.
  */
 public class WearService extends TeleportService{
-
+    private static final String TAG = "WearService";
 
 
     @Override
@@ -21,6 +21,7 @@ public class WearService extends TeleportService{
         //The quick way is to use setOnGetMessageTask, and set a new task
         setOnGetMessageTask(new StartActivityTask());
 
+        setOnSyncDataItemTask(new StartObjectTask());
 
         //alternatively, you can use the Builder to create new Tasks
         /*
@@ -63,5 +64,12 @@ public class WearService extends TeleportService{
         }
     }
 
+    public class StartObjectTask extends OnSyncDataItemTask {
 
+        @Override
+        protected void onPostExecute(DataMap result) {
+            CustomObject obj = new CustomObject(TeleportClient.byteToParcel(result.getByteArray("byte")));
+            Log.d(TAG, "onPostExecute object: " + obj);
+        }
+    }
 }

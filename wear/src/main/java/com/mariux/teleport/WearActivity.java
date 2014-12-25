@@ -101,14 +101,8 @@ public class WearActivity extends Activity {
     public class ShowToastOnSyncDataItemTask extends TeleportClient.OnSyncDataItemTask {
 
         protected void onPostExecute(DataMap dataMap) {
-
-            String str = dataMap.getString("string");
-            Log.d(TAG, "onPostExecute s:" + str);
-
-            //CustomObject s = new CustomObject(TeleportClient.byteToParcel(dataMap.getByteArray("byte")));
-            //Log.d(TAG, "onPostExecute obj: " + s);
-
-            //Toast.makeText(getApplicationContext(),"DataItem - "+s,Toast.LENGTH_SHORT).show();
+            CustomObject obj = new CustomObject(TeleportClient.byteToParcel(dataMap.getByteArray("byte")));
+            Log.d(TAG, "onPostExecute object: " + obj);
 
             mTeleportClient.setOnSyncDataItemTask(new ShowToastOnSyncDataItemTask());
         }

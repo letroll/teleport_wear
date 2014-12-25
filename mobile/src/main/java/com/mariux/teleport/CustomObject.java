@@ -42,8 +42,16 @@ public class CustomObject implements Parcelable {
         dest.writeInt(number);
     }
 
-    private CustomObject(Parcel in){
+    public CustomObject(Parcel in){
         this.name = in.readString();
         this.number = in.readInt();
+    }
+
+    @Override
+    public String toString() {
+        return "CustomObject{" +
+                "name='" + name + '\'' +
+                ", number=" + number +
+                '}';
     }
 }
