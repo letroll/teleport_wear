@@ -17,7 +17,6 @@ public class WearService extends TeleportService{
     @Override
     public void onCreate() {
         super.onCreate();
-
         //The quick way is to use setOnGetMessageTask, and set a new task
         setOnGetMessageTask(new StartActivityTask());
 
@@ -70,6 +69,9 @@ public class WearService extends TeleportService{
         protected void onPostExecute(DataMap result) {
             CustomObject obj = new CustomObject(TeleportClient.byteToParcel(result.getByteArray("byte")));
             Log.d(TAG, "onPostExecute object: " + obj);
+            
+            //Pass object to EventBus to notify all subscribers
+            TeleportApp.eventBus.post(obj);
         }
     }
 }
