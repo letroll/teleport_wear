@@ -3,6 +3,7 @@ package com.mariux.teleport;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,7 +11,7 @@ import com.google.android.gms.wearable.DataMap;
 import com.mariux.teleport.lib.TeleportClient;
 
 public class WearActivity extends Activity {
-
+    private static final String TAG = "WearActivity";
     private TextView mTextView;
     TeleportClient mTeleportClient;
     TeleportClient.OnSyncDataItemTask mOnSyncDataItemTask;
@@ -101,9 +102,13 @@ public class WearActivity extends Activity {
 
         protected void onPostExecute(DataMap dataMap) {
 
-            String s = dataMap.getString("string");
+            String str = dataMap.getString("string");
+            Log.d(TAG, "onPostExecute s:" + str);
 
-            Toast.makeText(getApplicationContext(),"DataItem - "+s,Toast.LENGTH_SHORT).show();
+            //CustomObject s = new CustomObject(TeleportClient.byteToParcel(dataMap.getByteArray("byte")));
+            //Log.d(TAG, "onPostExecute obj: " + s);
+
+            //Toast.makeText(getApplicationContext(),"DataItem - "+s,Toast.LENGTH_SHORT).show();
 
             mTeleportClient.setOnSyncDataItemTask(new ShowToastOnSyncDataItemTask());
         }

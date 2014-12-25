@@ -81,7 +81,9 @@ public class MobileActivity extends Activity {
         mTeleportClient.setOnSyncDataItemTask(new ShowToastOnSyncDataItemTask());
 
         //Let's sync a String!
-        mTeleportClient.syncString("string", syncDataItemEditText.getText().toString());
+        //CustomObject customObject = new CustomObject("nameTest", 22);
+        //mTeleportClient.syncObject("byte", customObject);
+        mTeleportClient.syncString("string", "text");
 
     }
 
