@@ -27,7 +27,7 @@ Michał Tajchert
 If you have any idea what to change just poke me:
 [Google+](https://plus.google.com/+MichalTajchert/)
 
-I don't thing it is stuff to pull request, so (for now) it is quite separate and we will see what to do next -** merge or not to merge?**
+I don't thing it is stuff to pull request, so (for now) it is quite separate and we will see what to do next - **merge or not to merge?**
 
 Original author of Teleport:
 
