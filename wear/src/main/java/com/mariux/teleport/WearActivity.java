@@ -38,9 +38,16 @@ public class WearActivity extends Activity {
 
     //Used by EventBus to pass event objects to our subscribed class
     public void onEvent(CustomObject event) {
-        Log.d(TAG, "onEvent obj: " + event);
+        Log.d(TAG, "onEvent object: " + event);
         if(mTextView != null) {
-            mTextView.setText("Received: " + event.getName());
+            mTextView.setText("Received object: " + event.getName());
+        }
+    }
+
+    public void onEvent(String event) {
+        Log.d(TAG, "onEvent string: " + event);
+        if(mTextView != null) {
+            mTextView.setText("Received string: " + event);
         }
     }
 }

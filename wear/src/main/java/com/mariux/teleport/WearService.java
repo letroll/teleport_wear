@@ -21,43 +21,21 @@ public class WearService extends TeleportService{
         setOnGetMessageTask(new StartActivityTask());
 
         setOnSyncDataItemTask(new StartObjectTask());
-
-        //alternatively, you can use the Builder to create new Tasks
-        /*
-        setOnGetMessageTaskBuilder(new OnGetMessageTask.Builder() {
-            @Override
-            public OnGetMessageTask build() {
-                return new OnGetMessageTask() {
-                    @Override
-                    protected void onPostExecute(String path) {
-                        if (path.equals("startActivity")){
-
-                            Intent startIntent = new Intent(getBaseContext(), WearActivity.class);
-                            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(startIntent);
-                        }
-
-                    }
-                };
-            }
-        });
-        */
-
     }
 
     //Task that shows the path of a received message
     public class StartActivityTask extends TeleportService.OnGetMessageTask {
 
         @Override
-        protected void onPostExecute(String  path) {
-
-       if (path.equals("startActivity")){
-
-            Intent startIntent = new Intent(getBaseContext(), WearActivity.class);
-            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startIntent);
-         }
-
+        protected void onPostExecute(String path) {
+            if (path.equals("startActivity")) {
+                Intent startIntent = new Intent(getBaseContext(), WearActivity.class);
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startIntent);
+            } else {
+                //If not start Activity just pass it out to our all subscribers (WearActivity) and let it catch String event
+                TeleportApp.eventBus.post(path);
+            }
             //let's reset the task (otherwise it will be executed only once)
             setOnGetMessageTask(new StartActivityTask());
         }
@@ -70,7 +48,7 @@ public class WearService extends TeleportService{
             CustomObject obj = new CustomObject(TeleportClient.byteToParcel(result.getByteArray("byte")));
             Log.d(TAG, "onPostExecute object: " + obj);
             
-            //Pass object to EventBus to notify all subscribers
+            //Pass object to EventBus to notify all subscribers (WearActivity) and let it catch Object event
             TeleportApp.eventBus.post(obj);
 
             //let's reset the task (otherwise it will be executed only once)
