@@ -6,6 +6,11 @@ import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.android.gms.wearable.DataMap;
+import com.mariux.teleport.lib.TeleportClient;
+
+import de.greenrobot.event.EventBus;
+
 public class WearActivity extends Activity {
     private static final String TAG = "WearActivity";
     private TextView mTextView;
@@ -27,27 +32,40 @@ public class WearActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        TeleportApp.eventBus.register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        TeleportApp.eventBus.unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
-    //Used by EventBus to pass event objects to our subscribed class
-    public void onEvent(CustomObject event) {
-        Log.d(TAG, "onEvent object: " + event);
+    //For Message API receiving
+    public void onEvent(final String event) {
+        Log.d(TAG, "onEvent string: " + event);
         if(mTextView != null) {
-            mTextView.setText("Received object: " + event.getName());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mTextView.setText("Received string: " + event);
+                }
+            });
         }
     }
 
-    public void onEvent(String event) {
-        Log.d(TAG, "onEvent string: " + event);
+    //For DataItem API changes
+    public void onEvent(DataMap dataMap) {
+        Log.d(TAG, "onPostExecute map: " + dataMap);
+        final CustomObject obj = new CustomObject(TeleportClient.byteToParcel(dataMap.getByteArray("byte")));
+        Log.d(TAG, "onPostExecute object from map: " + obj);
         if(mTextView != null) {
-            mTextView.setText("Received string: " + event);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mTextView.setText("Received object from map: " + obj.getName());
+                }
+            });
         }
     }
 }
