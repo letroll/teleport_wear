@@ -175,7 +175,12 @@ public class TeleportClient implements DataApi.DataListener,
     }
 
     public void syncObject(String key, Parcelable object) {
-        syncByteArray(key, parcelToByte(object));
+        byte[] arr = parcelToByte(object);
+        if((arr.length/1024) > 100){
+            throw new RuntimeException("Object is too big to push it via Google Play Services");
+        } else {
+            syncByteArray(key, arr);
+        }
     }
 
 
