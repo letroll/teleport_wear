@@ -72,6 +72,9 @@ public class WearService extends TeleportService{
             
             //Pass object to EventBus to notify all subscribers
             TeleportApp.eventBus.post(obj);
+
+            //let's reset the task (otherwise it will be executed only once)
+            setOnSyncDataItemTask(new StartObjectTask());
         }
     }
 }
