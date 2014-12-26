@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.wearable.DataMap;
-import com.mariux.teleport.lib.TeleportClient;
 
 import de.greenrobot.event.EventBus;
 
@@ -42,13 +41,13 @@ public class WearActivity extends Activity {
     }
 
     //For Message API receiving
-    public void onEvent(final String event) {
-        Log.d(TAG, "onEvent string: " + event);
+    public void onEvent(final String messageContent) {
+        Log.d(TAG, "onEvent message: " + messageContent);
         if(mTextView != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mTextView.setText("Received string: " + event);
+                    mTextView.setText("Received message: " + messageContent);
                 }
             });
         }
@@ -56,14 +55,13 @@ public class WearActivity extends Activity {
 
     //For DataItem API changes
     public void onEvent(DataMap dataMap) {
-        Log.d(TAG, "onPostExecute map: " + dataMap);
-        final CustomObject obj = new CustomObject(TeleportClient.byteToParcel(dataMap.getByteArray("byte")));
-        Log.d(TAG, "onPostExecute object from map: " + obj);
+        final String string = dataMap.getString("string");
+        Log.d(TAG, "onPostExecute String from map: " + string);
         if(mTextView != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mTextView.setText("Received object from map: " + obj.getName());
+                    mTextView.setText("Received String from map: " + string);
                 }
             });
         }
