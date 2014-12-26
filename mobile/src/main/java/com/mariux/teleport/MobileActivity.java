@@ -66,10 +66,9 @@ public class MobileActivity extends Activity {
     }
 
     public void syncDataItem(View v) {
-        //Let's sync a Custom Object - how cool is that?
 
-        CustomObject customObject = new CustomObject(syncDataItemEditText.getText().toString(), 22);
-        mTeleportClient.syncObject("byte", customObject);
+        //Let's sync a Custom Object - how cool is that?
+        mTeleportClient.syncString("sting", syncDataItemEditText.getText().toString());
     }
 
     public void sendMessage(View v) {
