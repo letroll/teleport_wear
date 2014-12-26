@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.google.android.gms.wearable.DataMap;
 import com.mariux.teleport.lib.TeleportClient;
 
+import de.greenrobot.event.EventBus;
+
 
 public class MobileActivity extends Activity {
 
@@ -30,30 +32,18 @@ public class MobileActivity extends Activity {
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mTeleportClient.connect();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        mTeleportClient.disconnect();
-//
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
         mTeleportClient.connect();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mTeleportClient.disconnect();
-
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -76,61 +66,39 @@ public class MobileActivity extends Activity {
     }
 
     public void syncDataItem(View v) {
-
-        //set the AsyncTask to execute when the Data is Synced
-        mTeleportClient.setOnSyncDataItemTask(new ShowToastOnSyncDataItemTask());
-
-        //Let's sync a String!
+        //Let's sync a Custom Object - how cool is that?
 
         CustomObject customObject = new CustomObject(syncDataItemEditText.getText().toString(), 22);
         mTeleportClient.syncObject("byte", customObject);
-        //mTeleportClient.syncString("string", "text");
-
     }
 
     public void sendMessage(View v) {
-
-        mTeleportClient.setOnGetMessageTask(new ShowToastFromOnGetMessageTask());
-
         mTeleportClient.sendMessage(sendMessageEditText.getText().toString(), null);
     }
 
     public void sendStartActivityMessage(View v) {
-
-        mTeleportClient.setOnGetMessageTask(new ShowToastFromOnGetMessageTask());
-
         mTeleportClient.sendMessage("startActivity", null);
     }
+    
+    //For DataItem API changes
+    public void onEvent(DataMap dataMap) {
+        final String s = dataMap.getString("string");
 
-
-    public class ShowToastOnSyncDataItemTask extends TeleportClient.OnSyncDataItemTask {
-
-        @Override
-        protected void onPostExecute(DataMap dataMap) {
-
-            String s = dataMap.getString("string");
-
-
-            Toast.makeText(getApplicationContext(),"DataItem - "+s,Toast.LENGTH_SHORT).show();
-
-            //let's reset the task (otherwise it will be executed only once)
-            mTeleportClient.setOnSyncDataItemTask(new ShowToastOnSyncDataItemTask());
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),"DataItem - "+s,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-
-    public class ShowToastFromOnGetMessageTask extends TeleportClient.OnGetMessageTask {
-
-        @Override
-        protected void onPostExecute(String path) {
-
-
-            Toast.makeText(getApplicationContext(),"Message - "+path,Toast.LENGTH_SHORT).show();
-
-            //let's reset the task (otherwise it will be executed only once)
-            mTeleportClient.setOnGetMessageTask(new ShowToastFromOnGetMessageTask());
-        }
+    //For Message API receiving
+    public void onEvent(final String path) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Message - " + path, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-
 }
