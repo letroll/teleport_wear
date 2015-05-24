@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -151,16 +149,6 @@ public class TeleportClient implements DataApi.DataListener,
         syncDataItem(putDataMapRequest);
     }
 
-    public void syncObject(String key, Parcelable object) {
-        byte[] arr = parcelToByte(object);
-        if((arr.length/1024) > 100){
-            throw new RuntimeException("Object is too big to push it via Google Play Services");
-        } else {
-            syncByteArray(key, arr);
-        }
-    }
-
-
     //General method to sync data in the Data Layer
     public void syncDataItem(PutDataMapRequest putDataMapRequest) {
 
@@ -289,20 +277,5 @@ public class TeleportClient implements DataApi.DataListener,
         @Override
         protected abstract void onPostExecute(Bitmap bitmap);
 
-    }
-
-    private static byte[] parcelToByte(Parcelable parceable) {
-        Parcel parcel = Parcel.obtain();
-        parceable.writeToParcel(parcel, 0);
-        byte[] bytes = parcel.marshall();
-        parcel.recycle();
-        return bytes;
-    }
-
-    public static Parcel byteToParcel(byte[] bytes) {
-        Parcel parcel = Parcel.obtain();
-        parcel.unmarshall(bytes, 0, bytes.length);
-        parcel.setDataPosition(0);
-        return parcel;
     }
 }
