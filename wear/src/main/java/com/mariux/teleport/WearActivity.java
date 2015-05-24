@@ -78,10 +78,6 @@ public class WearActivity extends Activity {
         });
         */
 
-
-
-
-
     }
 
     @Override
@@ -94,7 +90,6 @@ public class WearActivity extends Activity {
     protected void onStop() {
         super.onStop();
         mTeleportClient.disconnect();
-
     }
 
     //Task to show the String from DataMap with key "string" when a DataItem is synced
@@ -120,8 +115,5 @@ public class WearActivity extends Activity {
             mTeleportClient.setOnGetMessageTask(new ShowToastFromOnGetMessageTask());
         }
     }
-
-
-
 
 }
