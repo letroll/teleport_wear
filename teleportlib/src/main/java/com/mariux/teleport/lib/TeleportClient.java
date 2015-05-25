@@ -180,7 +180,6 @@ public class TeleportClient implements DataApi.DataListener,
                             Log.e(TAG, "ERROR: failed to putDataItem, status code: "
                                     + dataItemResult.getStatus().getStatusCode());
                         }
-
                     }
                 });
     }
@@ -202,8 +201,6 @@ public class TeleportClient implements DataApi.DataListener,
 
     //Task to send messages to nodes
     private class StartTeleportMessageTask extends AsyncTask<Object, Void, Object> {
-
-
         @Override
         protected Void doInBackground(Object... args) {
             Collection<String> nodes = getNodes();
@@ -271,12 +268,10 @@ public class TeleportClient implements DataApi.DataListener,
         this.mGoogleApiClient = mGoogleApiClient;
     }
 
-
     /**
      * Task to elaborate image from an Asset. You must pass the Asset and the mTeleportClient.getGoogleApiClient
      */
     public abstract static class ImageFromAssetTask extends AsyncTask<Object, Void, Bitmap> {
-
         @Override
         protected Bitmap doInBackground(Object... params) {
             InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
@@ -288,7 +283,6 @@ public class TeleportClient implements DataApi.DataListener,
 
         @Override
         protected abstract void onPostExecute(Bitmap bitmap);
-
     }
 
     private static byte[] parcelToByte(Parcelable parceable) {

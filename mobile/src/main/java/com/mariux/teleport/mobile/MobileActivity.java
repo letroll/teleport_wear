@@ -1,4 +1,4 @@
-package com.mariux.teleport;
+package com.mariux.teleport.mobile;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.wearable.DataMap;
+import com.mariux.teleport.R;
 import com.mariux.teleport.lib.TeleportClient;
 
 import de.greenrobot.event.EventBus;
@@ -16,9 +17,9 @@ import de.greenrobot.event.EventBus;
 
 public class MobileActivity extends Activity {
 
-    TeleportClient mTeleportClient;
-    EditText syncDataItemEditText;
-    EditText sendMessageEditText;
+    private TeleportClient mTeleportClient;
+    private EditText syncDataItemEditText;
+    private EditText sendMessageEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +28,12 @@ public class MobileActivity extends Activity {
 
         syncDataItemEditText = (EditText) findViewById(R.id.syncDataItemEditText);
         sendMessageEditText = (EditText) findViewById(R.id.sendMessageEditText);
-
-        mTeleportClient = new TeleportClient(this);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mTeleportClient = new TeleportClient(this);
         mTeleportClient.connect();
         EventBus.getDefault().register(this);
     }
@@ -66,9 +65,8 @@ public class MobileActivity extends Activity {
     }
 
     public void syncDataItem(View v) {
-
         //Let's sync a Custom Object - how cool is that?
-        mTeleportClient.syncString("sting", syncDataItemEditText.getText().toString());
+        mTeleportClient.syncString("string", syncDataItemEditText.getText().toString());
     }
 
     public void sendMessage(View v) {
